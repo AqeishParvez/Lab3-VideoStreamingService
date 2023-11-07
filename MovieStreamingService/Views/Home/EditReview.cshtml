@@ -1,0 +1,62 @@
+﻿@model MovieStreamingService.Models.Movie
+@{
+    ViewData["Title"] = "EditReview";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<br />
+<br />
+<div class="container">
+    <div class="col-md-6 offset-3">
+        <div class="row">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Edit Review</h2>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <input type="hidden" value="@Model.Title" id="title" />
+                        <input type="hidden" value="@Model.MovieID" id="movieID" />
+                        <label>Review</label>
+                        <input class="form-control"  id="review"  value="@ViewBag.message" />
+                        <button type="button" class="btn btn-primary mt-4" id="submit-button">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#submit-button').click(function () {
+                const review = $('#review').val();
+                var title = $("#title").val();
+                var movieID = $("#movieID").val();
+                 if (review.trim() === '') {
+                    alert('Please write your review');
+                } else {
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Home/EditReviewC',
+                        data: {
+                            review: review,
+                            title: title,
+                            movieID: movieID
+                        },
+                        success: function (response) {
+                            alert('Review submitted successfully');
+                            location.reload();
+                        },
+                        error: function () {
+                            alert('Error submitting review');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

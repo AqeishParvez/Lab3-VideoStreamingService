@@ -1,0 +1,170 @@
+﻿@model List<MovieStreamingService.Models.Movie>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    .card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: 20px;
+    }
+
+    .video-container {
+        position: relative;
+        overflow: hidden;
+        padding-bottom: 56.25%;
+    }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+    .details {
+        padding: 20px;
+    }
+
+    .title {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .director {
+        color: #666;
+        margin: 5px 0;
+    }
+
+    .description {
+        font-size: 14px;
+    }
+
+    .details-button {
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 10px;
+        transition: background-color 0.3s;
+    }
+
+        .details-button:hover {
+            background-color: #0056b3;
+        }
+
+    .left-column {
+        padding: 20px;
+    }
+
+        .left-column select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+</style>
+
+<br />
+<br />
+<h2 class="text-center">List of Movie</h2>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 left-column">
+            <select id="categorySelect">
+                <option selected disabled>Genere List</option>
+                <option value="Action">Action</option>
+                <option value="Animation">Animation</option>
+                <option value="Comendy">Comendy</option>
+                <option value="Crime">Crime</option>
+                <option value="Drama">Drama</option>
+                <option value="Experimental">Experimental </option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="row">
+                    @if (Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            if (!string.IsNullOrWhiteSpace(item.Link))
+                            {
+                                item.Link = "https://www.youtube.com/embed/" + item.Link.Split('=').Last();
+                            }
+                            <div class="col-md-6">
+                                <div class="video-container mt-2" style="margin-left:20px">
+                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/your-video-id" frameborder="0" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                            <div class="col-md-6 details">
+                                <h2 class="title">@item.Title</h2>
+                                <p class="director">Director: @item.Director</p>
+                                <a class="details-button" style="margin-top:30px" asp-action="MovieDetail" asp-route-movieId="@item.MovieID" asp-route-title="@item.Title">View Details</a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-center">Record not found</p>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-3 left-column">
+            <select id="ReviewSelect" class="form-control">
+                <option selected disabled>Customer Review</option>
+                <option value="0">0-5 customer review</option>
+                <option value="5">5-8 customer review</option>
+                <option value="9">8-10 customer review</option>
+
+            </select>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#ReviewSelect').on('change', function () {
+                var selectedReviewSelect = $(this).val(); // Get the selected value
+
+                if (selectedReviewSelect) {
+                    var url = '/Home/Index?ReviewSelect=' + selectedReviewSelect; // Pass the selected category as a query parameter
+
+                    // Redirect to the constructed URL
+                    window.location.href = url;
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#categorySelect').on('change', function () {
+                var selectedCategoryId = $(this).val(); // Get the selected value
+
+                if (selectedCategoryId) {
+                    var url = '/Home/Index?categoryId=' + selectedCategoryId; // Pass the selected category as a query parameter
+
+                    // Redirect to the constructed URL
+                    window.location.href = url;
+                }
+            });
+        });
+    </script>
+}

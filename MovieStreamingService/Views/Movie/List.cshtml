@@ -1,0 +1,51 @@
+﻿@model List<MovieStreamingService.Models.Movie>
+
+@using Microsoft.AspNetCore.Identity
+@using MovieStreamingService.Areas.Identity.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<br />
+<br />
+<br />
+<div class="container">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="card">
+                <div class="card-header">
+                    <p style="float:left" class="mt-2">List of Movie</p>
+                    <a asp-action="Create" style="float:right" class="btn btn-primary">Create New Movie</a>
+
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Director</th>
+                                <th>Genre</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var movie in Model.Where(m => m.UserID == UserManager.GetUserId(User)))
+                            {
+                                <tr>
+                                    <td>@movie.Title</td>
+                                    <td>@movie.Director</td>
+                                    <td>@movie.Genre</td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-movieId="@movie.MovieID" asp-route-title="@movie.Title" class="btn btn-secondary">Edit</a> |
+                                        <a asp-action="Delete" asp-route-movieId="@movie.MovieID" asp-route-title="@movie.Title" class="btn btn-danger">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

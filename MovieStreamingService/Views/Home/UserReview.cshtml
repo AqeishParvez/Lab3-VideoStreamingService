@@ -1,0 +1,70 @@
+﻿@model List<MovieStreamingService.Models.Movie>
+@using Microsoft.AspNetCore.Identity
+@using MovieStreamingService.Areas.Identity.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "UserReview";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var uniqueTitles = new Dictionary<string, bool>();
+
+}
+
+<br />
+<br />
+<br />
+<div class="container">
+    <div class="col-md-6 offset-3">
+        <div class="row">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center"> user Review List</h2>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>user id</th>
+                            <th>Date</th>
+                            <th>Comment</th>
+                            <th>Action</th>
+                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            if (item.Comment != null)
+                            {
+                                // Find the latest comment for this title
+                                var latestComment = item.Comment
+                                    .Where(m => m.UserId == UserManager.GetUserId(User))
+                                    .OrderByDescending(c => c.Date)
+                                    .FirstOrDefault();
+
+                                if (latestComment != null)
+                                {
+                                    // If there's a latest comment, display it
+                                    if (!uniqueTitles.ContainsKey(item.Title))
+                                    {
+                                        uniqueTitles[item.Title] = true;
+
+                                        <tr>
+                                            <td>@latestComment.UserId</td>
+                                            <td>@latestComment.Date</td>
+                                            <td>@latestComment.CommentText</td>
+                                            <td>
+                                                @if (DateTime.Now - latestComment.Date <= TimeSpan.FromHours(24))
+                                                {
+                                                    <a class="btn btn-primary" asp-route-movieId="@item.MovieID" asp-route-title="@item.Title" asp-action="EditReview">Edit</a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

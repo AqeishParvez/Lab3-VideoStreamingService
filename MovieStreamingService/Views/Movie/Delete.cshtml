@@ -1,0 +1,16 @@
+﻿@model MovieStreamingService.Models.Movie
+
+<h2>Delete Movie</h2>
+<p>Are you sure you want to delete this movie?</p>
+<dl>
+    <dt>Title</dt>
+    <dd>@Model.Title</dd>
+    <dt>Director</dt>
+    <dd>@Model.Director</dd>
+    <!-- Display other movie properties here -->
+</dl>
+<form asp-action="Delete" method="post">
+    <input asp-for="MovieID" type="hidden" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="List">Back to List</a>
+</form>

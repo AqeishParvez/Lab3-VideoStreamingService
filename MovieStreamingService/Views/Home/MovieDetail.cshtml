@@ -1,0 +1,274 @@
+﻿@model MovieStreamingService.Models.Movie
+@{
+    ViewData["Title"] = "MovieDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: 20px;
+    }
+
+    .video-container {
+        position: relative;
+        overflow: hidden;
+        padding-bottom: 56.25%;
+    }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+    .details {
+        padding: 20px;
+    }
+
+    .title {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .director {
+        color: #666;
+        margin: 5px 0;
+    }
+
+    .description {
+        font-size: 14px;
+    }
+
+    .details-button {
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 10px;
+        transition: background-color 0.3s;
+    }
+
+        .details-button:hover {
+            background-color: #0056b3;
+        }
+
+    .left-column {
+        padding: 20px;
+    }
+
+        .left-column select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+    .comment-section {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .comment-list {
+        margin-top: 20px;
+    }
+
+    .comment {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        padding: 10px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+    }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+    .comment-form {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    h3 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    form input,
+    form textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    form button {
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+    .star-input input[type="radio"] {
+        display: none;
+    }
+
+    .star-input label {
+        display: inline-block;
+        cursor: pointer;
+        padding: 5px;
+    }
+
+        .star-input label::before {
+            content: "\2605";
+            font-size: 24px;
+            color: #ccc;
+        }
+
+    .star-input input[type="radio"]:checked ~ label::before {
+        color: #FFD700;
+    }
+</style>
+
+<br />
+<br />
+<h2 class="text-center">Movie Detail</h2>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 left-column">
+            <div class="video-container mt-2" style="margin-left:20px">
+                <iframe width="500" height="315" src="https://www.youtube.com/embed/your-video-id" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-12 details">
+                        <h2 class="title" id="title">@Model.Title</h2>
+                        <p class="director">Director: @Model.Director </p>
+                        <p class="director">Genre: @Model.Genre </p>
+                        <input type="hidden" value="@Model.MovieID" id="movieID" />
+                        <button class="details-button">Back to page</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<section class="comment-section">
+    <h2> Reviews and comment</h2>
+
+    <!-- Comment List -->
+    <div class="comment-list">
+        <div class="comment">
+            <div class="user-info">
+                <span>User</span>
+            </div>
+           
+            <div class="ratings">
+                <div class="star-rating">★★★★★</div>
+            </div>
+            <p>Great product! I love it.</p>
+        </div>      
+    </div>
+
+    <!-- Comment Input Form -->
+    <div class="comment-form">
+        <h3>Add a Review</h3>
+        <form>
+            <div class="star-input">
+                <input type="radio" name="rating" id="star5" value="5">
+                <label for="star5">★★★★★</label>
+                <input type="radio" name="rating" id="star4" value="4">
+                <label for="star4">★★★★</label>
+                <input type="radio" name="rating" id="star3" value="3">
+                <label for="star3">★★★</label>
+                <input type="radio" name="rating" id="star2" value="2">
+                <label for="star2">★★</label>
+                <input type="radio" name="rating" id="star1" value="1">
+                <label for="star1">★</label>
+            </div>
+            <textarea placeholder="Write your review..." id="review" required></textarea>
+            <button type="button" id="submit-button">Submit</button>
+        </form>
+    </div>
+</section>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#submit-button').click(function () {
+                const rating = $("input[name='rating']:checked").val();
+                const review = $('#review').val();
+                var title = $("#title").text();
+                var movieID = $("#movieID").val();
+                if (!rating) {
+                    alert('Please select a rating');
+                } else if (review.trim() === '') {
+                    alert('Please write your review');
+                } else {
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Home/SaveReview',
+                        data: {
+                            rating: rating,
+                            review: review,
+                            title: title,
+                            movieID: movieID
+                        },
+                        success: function (response) {
+                            alert('Review submitted successfully');
+                            location.reload();
+                        },
+                        error: function () {
+                            alert('Error submitting review');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}
